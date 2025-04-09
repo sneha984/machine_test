@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:machine_test_flutter/core/commons/constants/image_constants.dart';
 import 'package:machine_test_flutter/core/commons/global_variables/global_variables.dart';
 import 'package:machine_test_flutter/features/auth/screens/signin_with_phone.dart';
+import 'package:machine_test_flutter/theme/palette.dart';
 
 class DatingWelcomePage extends StatelessWidget {
-  const DatingWelcomePage({Key? key}) : super(key: key);
+  const DatingWelcomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +16,7 @@ class DatingWelcomePage extends StatelessWidget {
         fit: StackFit.expand,
         children: [
           Image.asset(
-            'assets/icons/image.png',
+            Constants.welcomePicture,
             fit: BoxFit.cover,
           ),
           Container(
@@ -31,7 +33,7 @@ class DatingWelcomePage extends StatelessWidget {
                   height: height * 0.12,
                 ),
                 SvgPicture.asset(
-                  'assets/icons/Frame 496.svg',
+                  Constants.appLogo,
                   height: height * 0.065,
                 ),
                 SizedBox(height: height * 0.02),
@@ -41,7 +43,7 @@ class DatingWelcomePage extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: height * 0.036,
                     fontWeight: FontWeight.bold,
-                    color: Colors.white,
+                    color: Palette.whiteColor,
                     height: 1.4,
                   ),
                 ),
@@ -50,8 +52,8 @@ class DatingWelcomePage extends StatelessWidget {
                   width: double.infinity,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.white,
+                      backgroundColor: Palette.whiteColor,
+                      foregroundColor: Palette.whiteColor,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -59,7 +61,7 @@ class DatingWelcomePage extends StatelessWidget {
                     ),
                     onPressed: () {},
                     icon: Image.asset(
-                      'assets/icons/Google.png',
+                      Constants.googleLogo,
                       fit: BoxFit.fill,
                       height: height * 0.025,
                     ),
@@ -69,7 +71,7 @@ class DatingWelcomePage extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: height * 0.015,
                         fontWeight: FontWeight.w400,
-                        color: Colors.black,
+                        color: Palette.blackColor,
                         height: 1.4,
                       ),
                     ),
@@ -81,7 +83,7 @@ class DatingWelcomePage extends StatelessWidget {
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color(0xFF1877F2),
-                      foregroundColor: Colors.white,
+                      foregroundColor: Palette.whiteColor,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -89,7 +91,7 @@ class DatingWelcomePage extends StatelessWidget {
                     ),
                     onPressed: () {},
                     icon: Image.asset(
-                      'assets/icons/fi_145802.png',
+                      Constants.facebookLogo,
                       fit: BoxFit.fill,
                       height: height * 0.025,
                     ),
@@ -99,7 +101,7 @@ class DatingWelcomePage extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: height * 0.015,
                         fontWeight: FontWeight.w400,
-                        color: Colors.white,
+                        color: Palette.whiteColor,
                         height: 1.4,
                       ),
                     ),
@@ -111,7 +113,7 @@ class DatingWelcomePage extends StatelessWidget {
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.pinkAccent,
-                      foregroundColor: Colors.white,
+                      foregroundColor: Palette.whiteColor,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -124,7 +126,7 @@ class DatingWelcomePage extends StatelessWidget {
                               builder: (context) => PhoneNumberPage()));
                     },
                     icon: Image.asset(
-                      'assets/icons/Phone.png',
+                      Constants.phone,
                       fit: BoxFit.fill,
                       height: height * 0.025,
                     ),
@@ -134,7 +136,7 @@ class DatingWelcomePage extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: height * 0.015,
                         fontWeight: FontWeight.w400,
-                        color: Colors.white,
+                        color: Palette.whiteColor,
                         height: 1.4,
                       ),
                     ),
@@ -151,7 +153,7 @@ class DatingWelcomePage extends StatelessWidget {
                         text: 'Terms',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
-                          color: Colors.white,
+                          color: Palette.whiteColor,
                         ),
                       ),
                       TextSpan(text: '. See how we use your data in our '),
@@ -159,7 +161,7 @@ class DatingWelcomePage extends StatelessWidget {
                         text: 'Privacy Policy.',
                         style: TextStyle(
                           decoration: TextDecoration.underline,
-                          color: Colors.white,
+                          color: Palette.whiteColor,
                         ),
                       ),
                     ],

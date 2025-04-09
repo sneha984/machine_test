@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:machine_test_flutter/core/commons/constants/image_constants.dart';
 
 import '../../../core/commons/global_variables/global_variables.dart';
 import '../../chat/screens/chat_list_screen.dart';
-import 'login_page.dart';
+import 'welcome_page.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   ConsumerState<SplashScreen> createState() => _SplashScreenState();
@@ -57,7 +58,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
       ),
       child: Center(
         child: SvgPicture.asset(
-          "assets/icons/Frame 496.svg",
+          Constants.appLogo,
 
           width: width * 0.3,
           // color: const Color(0xff584CF4),

@@ -44,8 +44,7 @@ class AuthController extends StateNotifier<bool> {
   Future<bool> verifyOtp(String phone, String otp) async {
     try {
       final data = await ref.read(authRepositoryProvider).verifyOtp(phone, otp);
-      print(data);
-      print("login_user_data");
+
       final accessToken = data['auth_status']?['access_token'];
       final userId = data['id'];
 
@@ -54,12 +53,6 @@ class AuthController extends StateNotifier<bool> {
       ref.read(userIdProvider.notifier).update(
             (state) => userId,
           );
-      print(ref.watch(userIdProvider));
-      print("ref.watch(userIdProvider)");
-      print("ref.watch(userIdProvider)");
-      print("ref.watch(userIdProvider)");
-      print(ref.watch(userIdProvider));
-      print(ref.watch(userIdProvider));
 
       return true;
     } catch (e) {

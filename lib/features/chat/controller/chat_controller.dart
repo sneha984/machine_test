@@ -10,17 +10,17 @@ final chatRepositoryProvider = Provider<ChatRepository>((ref) {
   return ChatRepository();
 });
 
-final chatUsersProvider = FutureProvider<List<ChatUser>>((ref) async {
-  return ref.read(chatRepositoryProvider).fetchContactUsers();
-});
 final getMessageProvider =
     FutureProvider.autoDispose.family<List<ChatMessage>, String>((ref, items) {
   return ref
       .watch(chatControllerProvider.notifier)
       .getChatMessages(items: items);
 });
-final getChatProvider = FutureProvider.autoDispose<List<ChatUser>>((ref) {
-  return ref.watch(chatControllerProvider.notifier).getChatUsers();
+final getChatProvider =
+    FutureProvider.autoDispose.family<List<ChatUser>, String>((ref, search) {
+  return ref
+      .watch(chatControllerProvider.notifier)
+      .getChatUsers(search: search);
 });
 final chatControllerProvider =
     NotifierProvider<ChatController, bool>(() => ChatController());
@@ -41,7 +41,7 @@ class ChatController extends Notifier<bool> {
         senderId: int.tryParse(data['sid'].toString()) ?? 0);
   }
 
-  Future<List<ChatUser>> getChatUsers() {
-    return _chatRepository.fetchContactUsers();
+  Future<List<ChatUser>> getChatUsers({required String search}) {
+    return _chatRepository.fetchContactUsers(search: search);
   }
 }

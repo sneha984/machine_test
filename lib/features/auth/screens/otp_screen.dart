@@ -1,140 +1,16 @@
-// import 'dart:convert';
-//
-// import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:japx/japx.dart';
-// import 'package:machine_test_flutter/chat_list_screen.dart';
-// import 'package:pin_code_fields/pin_code_fields.dart';
-//
-// import 'global_variables.dart';
-//
-// class OtpScreen extends ConsumerStatefulWidget {
-//   final String phoneNumber;
-//
-//   const OtpScreen({Key? key, required this.phoneNumber}) : super(key: key);
-//
-//   @override
-//   ConsumerState<OtpScreen> createState() => _OtpScreenState();
-// }
-//
-// class _OtpScreenState extends ConsumerState<OtpScreen> {
-//   final TextEditingController otpController = TextEditingController();
-//   final storage = const FlutterSecureStorage();
-//
-//   Future<void> verifyOtp(String otp) async {
-//     final url = Uri.parse(
-//         'https://test.myfliqapp.com/api/v1/auth/registration-otp-codes/actions/phone/verify-otp');
-//
-//     final response = await http.post(
-//       url,
-//       headers: {'Content-Type': 'application/json'},
-//       body: jsonEncode({
-//         "data": {
-//           "type": "registration_otp_codes",
-//           "attributes": {
-//             "phone": widget.phoneNumber,
-//             "otp": int.parse(otp),
-//             "device_meta": {
-//               "type": "mobile",
-//               "name": "Flutter App",
-//               "os": "Android/iOS",
-//               "browser": "Flutter",
-//               "browser_version": "1.0",
-//               "user_agent": "Flutter",
-//               "screen_resolution": "1080x1920",
-//               "language": "en-US"
-//             }
-//           }
-//         }
-//       }),
-//     );
-//
-//     if (response.statusCode == 200) {
-//       final parsedJson = jsonDecode(response.body);
-//       final japxData = Japx.decode(parsedJson);
-//
-//       final userId = japxData['data']?['id'];
-//       final accessToken = japxData['data']?['auth_status']?['access_token'];
-//
-//       // Save data securely
-//       final storage = ref.read(secureStorageProvider);
-//       await storage.write(key: 'accessToken', value: accessToken);
-//
-//       await storage.write(key: 'user_id', value: userId);
-//
-//       // await storage.write(key: 'access_token', value: accessToken);
-//
-//       print("✅ OTP Verified. User ID: $userId");
-//       print("✅ OTP Verified. User ID: $accessToken");
-//
-//       // Navigate to Chat Screen
-//       Navigator.pushAndRemoveUntil(
-//         context,
-//         MaterialPageRoute(builder: (context) => ChatUsersScreen()),
-//         (route) => true,
-//       );
-//     } else {
-//       print("❌ Verification failed: ${response.body}");
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text("Invalid OTP")),
-//       );
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(title: const Text("Verify OTP")),
-//       body: Padding(
-//         padding: const EdgeInsets.all(24.0),
-//         child: Column(
-//           children: [
-//             const Text("Enter the OTP sent to your phone"),
-//             const SizedBox(height: 20),
-//             const SizedBox(height: 24),
-//             PinCodeTextField(
-//               appContext: context,
-//               length: 6,
-//               onChanged: (value) => otpController.text = value,
-//               onCompleted: (value) => otpController.text = value,
-//               keyboardType: TextInputType.number,
-//               pinTheme: PinTheme(
-//                 shape: PinCodeFieldShape.box,
-//                 borderRadius: BorderRadius.circular(10),
-//                 fieldHeight: 50,
-//                 fieldWidth: 40,
-//                 activeColor: Colors.black,
-//                 inactiveColor: Colors.grey,
-//                 selectedColor: Colors.pink,
-//               ),
-//             ),
-//             const SizedBox(height: 20),
-//             ElevatedButton(
-//               onPressed: () {
-//                 verifyOtp(otpController.text.trim());
-//               },
-//               child: const Text("Verify"),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:machine_test_flutter/features/chat/screens/chat_list_screen.dart';
+import 'package:machine_test_flutter/theme/palette.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../../core/commons/global_variables/global_variables.dart';
+import '../../chat/screens/chat_list_screen.dart';
 import '../controller/auth_controller.dart';
 
 class OtpScreen extends ConsumerStatefulWidget {
   final String phoneNumber;
-  const OtpScreen({Key? key, required this.phoneNumber}) : super(key: key);
+  const OtpScreen({super.key, required this.phoneNumber});
 
   @override
   ConsumerState<OtpScreen> createState() => _OtpScreenState();
@@ -142,25 +18,36 @@ class OtpScreen extends ConsumerStatefulWidget {
 
 class _OtpScreenState extends ConsumerState<OtpScreen> {
   final TextEditingController otpController = TextEditingController();
-
-  void handleVerify() async {
+  void handleVerify(BuildContext context) async {
     final controller = ref.read(authControllerProvider.notifier);
+
+    final navigator = Navigator.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+
     final success = await controller.verifyOtp(
       widget.phoneNumber,
       otpController.text.trim(),
     );
 
+    if (!context.mounted) return;
+
     if (success) {
-      Navigator.pushAndRemoveUntil(
-        context,
+      navigator.pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => ChatUsersList()),
         (_) => false,
       );
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
+      messenger.showSnackBar(
         const SnackBar(content: Text("Invalid OTP")),
       );
     }
+  }
+
+  @override
+  void dispose() {
+    otpController.dispose();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -188,7 +75,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                   style: GoogleFonts.poppins(
                     fontSize: height * 0.032,
                     fontWeight: FontWeight.w600,
-                    color: Colors.black,
+                    color: Palette.blackColor,
                   ),
                 ),
               ),
@@ -219,7 +106,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                       style: GoogleFonts.poppins(
                         fontSize: height * 0.017,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                        color: Palette.blackColor,
                       ),
                     ),
                   ),
@@ -243,7 +130,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                   inactiveBorderWidth: 0.7,
                   borderWidth: 0.1,
                   activeBorderWidth: 0.7,
-                  activeColor: Colors.black,
+                  activeColor: Palette.blackColor,
                   inactiveColor: Colors.grey,
                   selectedColor: Colors.pink,
                 ),
@@ -264,7 +151,7 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                 style: GoogleFonts.poppins(
                   fontSize: height * 0.016,
                   fontWeight: FontWeight.w600,
-                  color: Colors.blue,
+                  color: Palette.blueColor,
                 ),
               ),
               Spacer(),
@@ -272,7 +159,9 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
                 width: double.infinity,
                 height: 48,
                 child: ElevatedButton(
-                  onPressed: handleVerify,
+                  onPressed: () {
+                    handleVerify(context);
+                  },
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),

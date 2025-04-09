@@ -6,4 +6,4 @@ double width = 0.0;
 final secureStorageProvider = Provider<FlutterSecureStorage>((ref) {
   return const FlutterSecureStorage();
 });
-final userIdProvider = StateProvider<String?>((ref) => null);
+final userIdProvider = StateProvider<String?>((ref) => "");
