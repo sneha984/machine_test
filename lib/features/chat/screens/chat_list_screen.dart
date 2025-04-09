@@ -146,9 +146,11 @@ class _ChatUsersListState extends State<ChatUsersList> {
             Padding(
               padding: EdgeInsets.only(left: width * 0.02, right: width * 0.02),
               child: TextFormField(
+                autofocus: false,
                 controller: searchController,
                 onChanged: (value) {
                   searchController.text = value;
+                  setState(() {});
                 },
                 decoration: InputDecoration(
                   hintText: 'Search',
